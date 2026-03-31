@@ -25,9 +25,19 @@ export default function Home() {
   
   // 최초 구동 시 인증 여부 및 PWA 스탠드얼론 여부 체크
   useEffect(() => {
-    // 개발 편의를 위해 임시로 보안 인증 및 PWA 모드 검사 우회 (모두 강제 승인)
-    setIsAuthenticated(true);
-    setIsStandalone(true);
+    // 1. PWA 스탠드얼론 체크 (스마트폰 홈 화면에 추가된 앱으로 실행되었는지 검사)
+    const isPWA = window.matchMedia('(display-mode: standalone)').matches || ('standalone' in window.navigator && (window.navigator as any).standalone) === true;
+    
+    // 개발 모드(로컬 테스트)일 때는 브라우저에서도 보이도록 임시 허용하고, 실제 배포 시에는 PWA로만 작동하게 함
+    setIsStandalone(isPWA || process.env.NODE_ENV === "development");
+
+    // 2. 인증 토큰 검사 (실제 관리자 승인 여부 체크)
+    const token = localStorage.getItem("yukim_auth_token");
+    if (token) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false); // 승인된 토큰이 없으면 AuthScreen 컴포넌트 등장
+    }
   }, []);
 
   const handleSplashComplete = useCallback(() => {
