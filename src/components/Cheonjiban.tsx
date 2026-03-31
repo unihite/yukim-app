@@ -93,11 +93,11 @@ const Cheonjiban = () => {
                     <div 
                       className={`absolute left-0 right-0 bottom-0 bg-white/40 transition-all ease-linear ${isYangjaPressing ? "h-full duration-1000" : "h-0 duration-[50ms]"}`}
                     />
-                    <div className="relative z-10 text-[14px] font-bold opacity-80 uppercase leading-none mb-0.5 pointer-events-none">양자</div>
-                    <div className="relative z-10 text-[14px] font-black leading-tight pointer-events-none">1초</div>
+                    <div className="relative z-10 text-[min(14px,3.2vw)] font-bold opacity-80 uppercase leading-none mb-0.5 pointer-events-none tracking-tighter">양자</div>
+                    <div className="relative z-10 text-[min(14px,3.2vw)] font-black leading-tight pointer-events-none tracking-tighter">1초</div>
                   </div>
                   <div 
-                    className={`flex-1 ${gender === "남" ? "bg-blue-900" : "bg-pink-500"} text-white flex items-center justify-center rounded-sm border-2 border-slate-600 font-black text-[15px] shadow-sm min-h-0 cursor-pointer active:scale-95 transition-colors select-none`}
+                    className={`flex-1 ${gender === "남" ? "bg-blue-900" : "bg-pink-500"} text-white flex items-center justify-center rounded-sm border-2 border-slate-600 font-black text-[min(15px,3.5vw)] tracking-tighter shadow-sm min-h-0 cursor-pointer active:scale-95 transition-colors select-none`}
                     onClick={() => setGender(gender === "남" ? "여" : "남")}
                   >
                     {gender}
@@ -115,12 +115,12 @@ const Cheonjiban = () => {
                           if (!isNaN(val)) setAge(val);
                         }
                       }}
-                      className="w-8 text-[17px] font-black text-center p-0 border-none outline-none leading-none bg-transparent"
+                      className="w-8 text-[min(17px,4vw)] tracking-tighter font-black text-center p-0 border-none outline-none leading-none bg-transparent"
                     />
-                    <span className="text-[14px] font-bold ml-0.5 whitespace-nowrap">세</span>
+                    <span className="text-[min(14px,3.2vw)] font-bold ml-0.5 whitespace-nowrap tracking-tighter">세</span>
                   </div>
                   <div 
-                    className="flex-1 bg-[#6366F1] text-white flex items-center justify-center rounded-sm border-2 border-slate-600 font-black text-[14px] shadow-sm active:bg-indigo-700 min-h-0 cursor-pointer select-none transition-colors"
+                    className="flex-1 bg-[#6366F1] text-white flex items-center justify-center rounded-sm border-2 border-slate-600 font-black text-[min(14px,3.2vw)] tracking-tighter shadow-sm active:bg-indigo-700 min-h-0 cursor-pointer select-none transition-colors"
                     onClick={() => setIsRyushinMode(true)}
                   >
                     류신
@@ -141,18 +141,18 @@ const Cheonjiban = () => {
                      <div 
                        className={`absolute left-0 right-0 bottom-0 bg-white/30 transition-all ease-linear ${isAdvicePressing ? "h-full duration-1000" : "h-0 duration-[50ms]"}`}
                      />
-                     <div className="relative z-10 text-[18px] font-black text-white leading-none mb-0.5 pointer-events-none">소담</div>
-                     <div className="relative z-10 text-[18px] font-black text-white leading-none mb-0.5 pointer-events-none">조언</div>
-                     <div className="relative z-10 text-[18px] font-black text-white leading-none mb-0.5 pointer-events-none">1초</div>
+                     <div className="relative z-10 text-[min(18px,4.2vw)] font-black text-white leading-none mb-0.5 pointer-events-none tracking-tighter">소담</div>
+                     <div className="relative z-10 text-[min(18px,4.2vw)] font-black text-white leading-none mb-0.5 pointer-events-none tracking-tighter">조언</div>
+                     <div className="relative z-10 text-[min(18px,4.2vw)] font-black text-white leading-none mb-0.5 pointer-events-none tracking-tighter">1초</div>
                   </div>
                   {(() => {
                     const [dateStr, timeStr] = dateTime.split(" ");
                     const [y, m, d] = dateStr ? dateStr.split("/") : ["2026", "01", "01"];
                     return (
                       <div className="flex-1 border-2 border-slate-600 rounded-md flex flex-col items-center justify-center bg-white overflow-hidden shadow-sm gap-0.5 pt-0.5 pb-0.5">
-                         <div className="text-[14px] font-black text-slate-700 leading-none">{y}</div>
-                         <div className="text-[14px] font-black text-slate-700 leading-none">{m}/{d}</div>
-                         <div className="text-[16px] font-black text-blue-900 tracking-tight leading-none mt-0.5">{timeStr}</div>
+                         <div className="text-[min(14px,3.2vw)] font-black text-slate-700 leading-none tracking-tighter">{y}</div>
+                         <div className="text-[min(14px,3.2vw)] font-black text-slate-700 leading-none tracking-tighter">{m}/{d}</div>
+                         <div className="text-[min(16px,3.8vw)] font-black text-blue-900 tracking-tighter leading-none mt-0.5">{timeStr}</div>
                       </div>
                     );
                   })()}
@@ -160,21 +160,21 @@ const Cheonjiban = () => {
 
                 {/* 3. 우측 열 (세로 통합 4단 구성: 태세/월건/월장/점시) */}
                 <div className="row-span-3 flex flex-col gap-1">
-                  <div className="flex-1 bg-white border-2 border-slate-600 rounded-md p-1 flex flex-col items-center justify-center shadow-sm min-h-0">
-                    <span className="text-[14px] text-gray-600 font-black uppercase leading-none">태세</span>
-                    <span className="text-[18px] font-black text-slate-900">{manseData ? manseData.taeseCheongan + manseData.taeseJiji : "丙午"}</span>
+                  <div className="flex-1 bg-white border-2 border-slate-600 rounded-md p-0.5 flex flex-col items-center justify-center shadow-sm min-h-0 overflow-hidden">
+                    <span className="text-[min(14px,3.2vw)] text-gray-600 font-black uppercase leading-none tracking-tighter whitespace-nowrap">태세</span>
+                    <span className="text-[min(18px,4.2vw)] font-black text-slate-900 tracking-tighter whitespace-nowrap">{manseData ? manseData.taeseCheongan + manseData.taeseJiji : "丙午"}</span>
                   </div>
-                  <div className="flex-1 bg-white border-2 border-slate-600 rounded-md p-1 flex flex-col items-center justify-center shadow-sm min-h-0">
-                    <span className="text-[14px] text-gray-600 font-black uppercase leading-none">월건</span>
-                    <span className="text-[18px] font-black text-slate-900">{manseData ? manseData.wolgunCheongan + manseData.wolgunJiji : "辛卯"}</span>
+                  <div className="flex-1 bg-white border-2 border-slate-600 rounded-md p-0.5 flex flex-col items-center justify-center shadow-sm min-h-0 overflow-hidden">
+                    <span className="text-[min(14px,3.2vw)] text-gray-600 font-black uppercase leading-none tracking-tighter whitespace-nowrap">월건</span>
+                    <span className="text-[min(18px,4.2vw)] font-black text-slate-900 tracking-tighter whitespace-nowrap">{manseData ? manseData.wolgunCheongan + manseData.wolgunJiji : "辛卯"}</span>
                   </div>
-                  <div className="flex-1 bg-white border-2 border-slate-600 rounded-md p-1 flex flex-col items-center justify-center shadow-sm min-h-0">
-                    <span className="text-[14px] text-gray-600 font-black uppercase leading-none">월장</span>
-                    <span className="text-[18px] font-black text-slate-900">{woljang}</span>
+                  <div className="flex-1 bg-white border-2 border-slate-600 rounded-md p-0.5 flex flex-col items-center justify-center shadow-sm min-h-0 overflow-hidden">
+                    <span className="text-[min(14px,3.2vw)] text-gray-600 font-black uppercase leading-none tracking-tighter whitespace-nowrap">월장</span>
+                    <span className="text-[min(18px,4.2vw)] font-black text-slate-900 tracking-tighter whitespace-nowrap">{woljang}</span>
                   </div>
-                  <div className="flex-1 bg-white border-2 border-slate-600 rounded-md p-1 flex flex-col items-center justify-center shadow-sm min-h-0">
-                    <span className="text-[14px] text-gray-600 font-black uppercase leading-none">점시</span>
-                    <span className="text-[18px] font-black text-slate-900">{jeomsi}</span>
+                  <div className="flex-1 bg-white border-2 border-slate-600 rounded-md p-0.5 flex flex-col items-center justify-center shadow-sm min-h-0 overflow-hidden">
+                    <span className="text-[min(14px,3.2vw)] text-gray-600 font-black uppercase leading-none tracking-tighter whitespace-nowrap">점시</span>
+                    <span className="text-[min(18px,4.2vw)] font-black text-slate-900 tracking-tighter whitespace-nowrap">{jeomsi}</span>
                   </div>
                 </div>
               </div>
@@ -211,30 +211,30 @@ const Cheonjiban = () => {
               {/* 2. 둔간 (천반 바로 위) 및 천반 공망 표시 */}
               <div className="w-full flex justify-center leading-none mb-1 h-5 items-center">
                  {isCheonbanGongmang ? (
-                   <span className="text-[22px] font-black text-red-500 tracking-tighter animate-pulse">○</span>
+                   <span className="text-[min(22px,5.5vw)] font-black text-red-500 tracking-tighter animate-pulse">○</span>
                  ) : (
-                   <span className="text-[22px] font-black text-purple-600 tracking-tighter">{toHangul(dungan, isHangulMode)}</span>
+                   <span className="text-[min(22px,5.5vw)] font-black text-purple-600 tracking-tighter">{toHangul(dungan, isHangulMode)}</span>
                  )}
               </div>
 
               {/* 3. 중앙 레이아웃: 12운성(좌) + 천반(중) + 천장(우) */}
               <div className="w-full flex items-center justify-between py-0 h-6">
                  {/* 12운성: 동적 계산 (일간 기반), 선생님 기준 천반 글자(upper) 대입 */}
-                 <span className="text-[14px] font-black text-slate-600 w-1/3 text-right uppercase leading-none tracking-tighter pr-1">
+                 <span className="text-[min(14px,3.2vw)] font-black text-slate-600 w-1/3 text-right uppercase leading-none tracking-tighter pr-0.5 whitespace-nowrap">
                    {getTwelveStage(manseData?.ilganCheongan || "甲", upper)}
                  </span>
                  {/* 천반: 정중앙 고정 */}
-                 <span className="text-[22px] font-black text-slate-900 w-1/3 text-center leading-none tracking-tighter">{toHangul(upper, isHangulMode)}</span>
+                 <span className="text-[min(22px,5.5vw)] font-black text-slate-900 w-1/3 text-center leading-none tracking-tighter">{toHangul(upper, isHangulMode)}</span>
                  {/* 천장: generalMap에서 뽑은 1글자를 천지반 전용 2글자 맵으로 변환하여 출력 */}
-                 <span className="text-[16px] font-black text-blue-700 w-1/3 text-left leading-none tracking-tighter whitespace-nowrap overflow-visible">
+                 <span className="text-[min(16px,3.8vw)] font-black text-blue-700 w-1/3 text-left leading-none tracking-tighter whitespace-nowrap overflow-hidden text-ellipsis pl-0.5">
                    {toHangul(generalMap[upper] ? FULL_GENERALS[generalMap[upper]] : "", isHangulMode)}
                  </span>
               </div>
             </div>
 
             {/* 4. 지반 지지 (위 그룹 바로 아래에 표시하여 여백 최소화 + 지반 공망 시 원형 테두리) */}
-            <div className="text-[22px] font-black leading-none w-full flex justify-center tracking-tighter">
-               <span className={`flex items-center justify-center w-[28px] h-[28px] text-slate-900 ${isJibanGongmang ? "border-[2px] border-red-500 rounded-full" : ""}`}>
+            <div className="text-[min(22px,5.5vw)] font-black leading-none w-full flex justify-center tracking-tighter">
+               <span className={`flex items-center justify-center w-[min(28px,6.5vw)] h-[min(28px,6.5vw)] text-slate-900 ${isJibanGongmang ? "border-[2px] border-red-500 rounded-full" : ""}`}>
                  {toHangul(cell, isHangulMode)}
                </span>
             </div>
@@ -247,12 +247,12 @@ const Cheonjiban = () => {
             {/* 특별 마커 (좌측 하단 배치) */}
             <div className="absolute bottom-1 left-1 flex flex-col items-start gap-0.5 pointer-events-none">
               {isHaengnyeon && (
-                <div className="flex items-center justify-center bg-yellow-100 text-orange-800 text-[10px] font-black px-1.5 py-[3px] rounded-[4px] border border-orange-200 shadow-sm leading-none whitespace-nowrap h-[18px]">
+                <div className="flex items-center justify-center bg-yellow-100 text-orange-800 text-[min(10px,2.5vw)] font-black px-1 py-[2px] rounded-[4px] border border-orange-200 shadow-sm leading-none whitespace-nowrap min-h-0 tracking-tighter">
                    <span>{haengnyeonGanji}</span>
                 </div>
               )}
               {cell === bonmyeongBranch && (
-                <div className="flex items-center justify-center bg-yellow-100 text-orange-800 text-[10px] font-black px-1.5 py-[3px] rounded-[4px] border border-orange-200 shadow-sm leading-none whitespace-nowrap h-[18px]">
+                <div className="flex items-center justify-center bg-yellow-100 text-orange-800 text-[min(10px,2.5vw)] font-black px-1 py-[2px] rounded-[4px] border border-orange-200 shadow-sm leading-none whitespace-nowrap min-h-0 tracking-tighter">
                    <span>本命</span>
                 </div>
               )}

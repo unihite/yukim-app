@@ -59,14 +59,14 @@ const SagwaSamjeon = () => {
             const lowerDisplay = i === 0 && manseData?.ilganCheongan ? (
               <div className="flex items-center w-full justify-between h-[28px]">
                 <span className="w-10"></span>
-                <span className="flex-1 text-[22px] font-black text-red-500 text-center tracking-tighter whitespace-nowrap leading-none">{toHangul(manseData.ilganCheongan, isHangulMode)}</span>
+                <span className="flex-1 text-[min(22px,5.5vw)] font-black text-red-500 text-center tracking-tighter whitespace-nowrap leading-none">{toHangul(manseData.ilganCheongan, isHangulMode)}</span>
                 <span className="w-10 flex justify-end items-center h-[28px]">
                   {checkGongmang(item.lower) ? (
-                    <span className="flex items-center justify-center w-[28px] h-[28px] text-[22px] font-black leading-none tracking-tighter text-slate-900 border-[2px] border-red-500 rounded-full uppercase">
+                    <span className="flex items-center justify-center w-[min(28px,6.5vw)] h-[min(28px,6.5vw)] text-[min(22px,5.5vw)] font-black leading-none tracking-tighter text-slate-900 border-[2px] border-red-500 rounded-full uppercase">
                       {toHangul(item.lower, isHangulMode)}
                     </span>
                   ) : (
-                    <span className="flex items-center justify-center w-[28px] h-[28px] text-[22px] font-black leading-none tracking-tighter text-gray-500 uppercase">
+                    <span className="flex items-center justify-center w-[min(28px,6.5vw)] h-[min(28px,6.5vw)] text-[min(22px,5.5vw)] font-black leading-none tracking-tighter text-gray-500 uppercase">
                       {toHangul(item.lower, isHangulMode)}
                     </span>
                   )}

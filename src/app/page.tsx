@@ -88,9 +88,9 @@ export default function Home() {
             </section>
           </div>
 
-          {/* 3. 하단 푸터 (고급스러운 여백) */}
-          <footer className="w-full py-8 text-center border-t border-slate-100 bg-slate-50/50">
-            <p className="text-[9px] text-slate-400 font-bold tracking-[0.3em]">
+          {/* 3. 하단 푸터 (여백 축소 및 강조) */}
+          <footer className="w-full py-3 text-center border-t border-slate-200 bg-slate-50/50">
+            <p className="text-[12px] text-slate-500 font-black tracking-[0.2em]">
               © 2026 소담 양자 육임
             </p>
           </footer>

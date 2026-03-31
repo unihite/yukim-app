@@ -24,7 +24,7 @@ const InputPanel = () => {
               const val = e.target.value;
               setCaseName(val === "" ? "메모" : val);
             }}
-            className="w-full bg-transparent border-none outline-none focus:ring-0 px-0 py-0 text-[16px] font-black text-slate-800 tracking-tight placeholder:font-bold placeholder:text-slate-500"
+            className="w-full bg-transparent border-none outline-none focus:ring-0 px-0 py-0 text-[min(16px,4vw)] font-black text-slate-800 tracking-tight placeholder:font-bold placeholder:text-slate-500"
           />
         </div>
       </div>

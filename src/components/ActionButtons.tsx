@@ -34,7 +34,7 @@ const ActionButtons = () => {
             inputMode="numeric"
             value={item.val}
             onChange={(e) => handleInputChange(e.target.value, item.set)}
-            className="w-full bg-white border-2 border-slate-600 rounded-md px-2 py-1.5 text-center text-[18px] font-black text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 transition-all shadow-sm placeholder:text-slate-400"
+            className="w-full bg-white border-2 border-slate-600 rounded-md px-2 py-1.5 text-center text-[min(18px,4.5vw)] font-black text-slate-900 tracking-tighter focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 transition-all shadow-sm placeholder:text-slate-400"
             placeholder={item.label}
           />
         </div>

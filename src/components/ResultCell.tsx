@@ -31,7 +31,7 @@ const ResultCell: React.FC<ResultCellProps> = ({
         {shinsal ? shinsal.split(" ").filter(Boolean).map((s, idx) => (
           <span 
             key={idx} 
-            className="text-[10px] font-black text-orange-700 bg-orange-100 border border-orange-200 px-1 py-[1px] rounded-sm leading-none shadow-sm whitespace-nowrap"
+            className="text-[min(10px,2.5vw)] font-black text-orange-700 bg-orange-100 border border-orange-200 px-1 py-[1px] rounded-sm leading-none shadow-sm whitespace-nowrap tracking-tighter"
           >
             {s}
           </span>
@@ -41,26 +41,26 @@ const ResultCell: React.FC<ResultCellProps> = ({
       {/* 2. 둔간 (천반 바로 위, 22px) */}
       <div className="w-full min-h-[22px] flex justify-center items-end leading-none mb-1">
         {isUpperGongmang ? (
-          <span className="text-[22px] font-black text-red-500 tracking-tighter animate-pulse">○</span>
+          <span className="text-[min(22px,5.5vw)] font-black text-red-500 tracking-tighter animate-pulse">○</span>
         ) : (
-          <span className={`text-[22px] font-black ${colorStem} tracking-tighter`}>{stem}</span>
+          <span className={`text-[min(22px,5.5vw)] font-black ${colorStem} tracking-tighter`}>{stem}</span>
         )}
       </div>
 
       {/* 3. 중앙: 천반/지반 지지 + 12운성(좌) + 천장(우) */}
       <div className="flex flex-col items-center space-y-1 w-full px-1">
         <div className="flex items-center w-full justify-center">
-          <span className="text-[16px] font-black text-slate-600 w-1/3 text-right uppercase leading-none tracking-tighter pr-1">{stage}</span>
-          <span className="text-[22px] font-black text-slate-900 leading-none tracking-tighter w-1/3 text-center">{upper}</span>
-          <span className="text-[22px] font-black text-blue-700 w-1/3 text-left pl-1 uppercase leading-none">{general?.charAt(0)}</span>
+          <span className="text-[min(16px,4vw)] font-black text-slate-600 w-1/3 text-right uppercase leading-none tracking-tighter pr-0.5 whitespace-nowrap">{stage}</span>
+          <span className="text-[min(22px,5.5vw)] font-black text-slate-900 leading-none tracking-tighter w-1/3 text-center">{upper}</span>
+          <span className="text-[min(22px,5.5vw)] font-black text-blue-700 w-1/3 text-left pl-0.5 uppercase leading-none">{general?.charAt(0)}</span>
         </div>
         <div className="w-full pt-1 flex justify-center items-center min-h-[28px]">
           {isLowerGongmang ? (
-             <span className="flex items-center justify-center w-[28px] h-[28px] text-[22px] font-black leading-none tracking-tighter text-slate-900 border-[2px] border-red-500 rounded-full">
+             <span className="flex items-center justify-center w-[min(28px,6.5vw)] h-[min(28px,6.5vw)] text-[min(22px,5.5vw)] font-black leading-none tracking-tighter text-slate-900 border-[2px] border-red-500 rounded-full">
                {lower}
              </span>
           ) : (
-             <span className="text-[22px] font-black text-slate-900 leading-none tracking-tighter w-full text-center flex justify-center items-center h-[26px]">{lower}</span>
+             <span className="text-[min(22px,5.5vw)] font-black text-slate-900 leading-none tracking-tighter w-full text-center flex justify-center items-center h-[26px]">{lower}</span>
           )}
         </div>
       </div>
