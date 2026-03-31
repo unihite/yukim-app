@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getRequest, setRequest, getAllRequests, deleteRequest } from "@/lib/db";
 import crypto from 'crypto';
 
-const SECRET_KEY = process.env.SECRET_KEY || 'YUKIM_DEFAULT_SECRET_2026';
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || 'YUKIM_PREMIUM_SECURE_AUTH_KEY_2026';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'yukim2026';
 
 function generateAuthCode(phone: string) {

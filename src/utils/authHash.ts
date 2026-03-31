@@ -3,7 +3,7 @@
  * @description 결정론적 해싱 알고리즘 (DHpass 클라이언트 자체 교차 검증용)
  */
 
-export const SECRET_KEY = "YUKIM_PREMIUM_SECURE_AUTH_KEY_2026"; // 서버의 .env와 정확히 일치해야 함
+export const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "YUKIM_PREMIUM_SECURE_AUTH_KEY_2026"; // 서버의 .env와 정확히 일치해야 함
 
 /**
  * 프론트엔드 자체 해싱 함수
