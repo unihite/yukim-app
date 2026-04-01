@@ -15,8 +15,8 @@ export async function getRequest(phone: string) {
       const redis = Redis.fromEnv();
       return await redis.hget("yukim_requests", phone);
     } catch(e) { 
-      console.error("Redis 통신 오류:", e); 
-      throw e; 
+      console.error("Redis 통신 오류 (임시 메모리로 대체):", e); 
+      // Redis 에러 발생 시 최후의 수단으로 메모리 반환
     }
   }
   return globalMemoryDb[phone] || null;
@@ -32,8 +32,7 @@ export async function getAllRequests() {
       const all: Record<string, any> | null = await redis.hgetall("yukim_requests");
       return all ? Object.values(all) : [];
     } catch(e) { 
-      console.error("Redis 통신 오류:", e);
-      throw e;
+      console.error("Redis 통신 오류 (임시 메모리로 대체):", e);
     }
   }
   return Object.values(globalMemoryDb);
@@ -49,8 +48,7 @@ export async function setRequest(phone: string, data: any) {
       await redis.hset("yukim_requests", { [phone]: data });
       return;
     } catch(e) {
-      console.error("Redis 통신 오류:", e);
-      throw e;
+      console.error("Redis 통신 오류 (임시 메모리에 저장):", e);
     }
   }
   globalMemoryDb[phone] = data;
@@ -66,8 +64,7 @@ export async function deleteRequest(phone: string) {
       await redis.hdel("yukim_requests", phone);
       return;
     } catch(e) {
-      console.error("Redis 통신 오류:", e);
-      throw e;
+      console.error("Redis 통신 오류 (임시 메모리에서 삭제):", e);
     }
   }
   delete globalMemoryDb[phone];
