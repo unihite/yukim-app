@@ -5,12 +5,45 @@
 
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useDivination } from "../context/DivinationContext";
 import { toPng } from "html-to-image";
+import HistoryModal from "./HistoryModal";
 
 const Header = () => {
-  const { isHangulMode, setIsHangulMode } = useDivination();
+  const { 
+    isHangulMode, setIsHangulMode,
+    caseName, gender, age, dateTime, yangja1, yangja2, yangja3 
+  } = useDivination();
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+
+  const handleSaveHistory = () => {
+    try {
+      const now = new Date();
+      const savedAt = `${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+      
+      const newItem = {
+        id: Date.now(),
+        savedAt,
+        caseName,
+        gender,
+        age,
+        dateTime,
+        yangja1,
+        yangja2,
+        yangja3
+      };
+      
+      const loaded = localStorage.getItem("yukim_saved_history");
+      const list = loaded ? JSON.parse(loaded) : [];
+      list.push(newItem);
+      localStorage.setItem("yukim_saved_history", JSON.stringify(list));
+      alert("현재 점사가 안전하게 기록되었습니다.");
+    } catch(e) {
+      alert("기록 저장 중 오류가 발생했습니다.");
+    }
+  };
+
   const handleCapture = async () => {
     const targetElement = document.getElementById("yukim-capture-area");
     if (!targetElement) {
@@ -19,7 +52,6 @@ const Header = () => {
     }
 
     try {
-      // 최신의 CSS 기술(Tailwind v4) 완벽 호환 캡처 브러리 적용
       const dataUrl = await toPng(targetElement, {
         pixelRatio: 2,
         backgroundColor: "#f8fafc",
@@ -34,28 +66,14 @@ const Header = () => {
       const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, "");
       const fileName = `sodam_yukim_jeomsa_${dateStr}.png`;
 
-      // Web Share API를 지원하는 모바일 기기 (갤러리에 직접 저장 가능)
-      if (navigator.share && navigator.canShare) {
-        // dataURL을 Blob -> File 객체로 변환
-        const response = await fetch(dataUrl);
-        const blob = await response.blob();
-        const file = new File([blob], fileName, { type: "image/png" });
-
-        if (navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: "소담 양자육임",
-            text: "점사 결과 확인",
-          });
-          return; // 공유/저장 성공 시 종료
-        }
-      }
-
-      // 데스크톱 환경이나 Web Share 미지원 기기용 Fallback (일반 다운로드)
+      // 모바일 기기에서 파일 전송(Share) 화면이 뜨는 현상 및 오류를 방지하기 위해
+      // 공유 API(navigator.share)를 제거하고 무조건 브라우저 직접 다운로드 방식으로 통일합니다.
       const link = document.createElement("a");
       link.download = fileName;
       link.href = dataUrl;
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
 
     } catch (err) {
       console.error("화면 캡쳐 중 오류가 발생했습니다:", err);
@@ -65,8 +83,21 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 w-full bg-[#1E3A8A] text-white py-1.5 px-3 flex items-center justify-between shadow-md z-50">
-      {/* 1. 좌측: 균형 맞추기용 빈 공간 (타이틀 중앙 정렬) */}
-      <div className="w-12"></div>
+      {/* 1. 좌측: 기록 불러오기 및 저장 버튼 */}
+      <div className="flex items-center gap-1.5" data-html2canvas-ignore="true">
+        <button 
+          onClick={() => setIsHistoryOpen(true)}
+          className="bg-white/10 px-2 py-1 rounded-md text-[11px] font-bold shadow-sm hover:bg-white/20 transition-all text-white border border-white/10"
+        >
+          목록
+        </button>
+        <button 
+          onClick={handleSaveHistory}
+          className="bg-teal-600/80 px-2 py-1 rounded-md text-[11px] font-bold shadow-md hover:bg-teal-500 transition-all border border-teal-400/30 text-white"
+        >
+          저장
+        </button>
+      </div>
       
       {/* 2. 중앙: 메인 타이틀 */}
       <h1 className="text-[17px] font-black tracking-tight flex items-center gap-2">
@@ -89,9 +120,12 @@ const Header = () => {
           onClick={handleCapture}
           className="bg-[#6366F1] px-2 py-1 rounded-md text-[11px] font-bold shadow-md hover:bg-[#5558E3] transition-all"
         >
-          저장
+          캡쳐
         </button>
       </div>
+
+      {/* 4. 기록 모달 영역 */}
+      <HistoryModal isOpen={isHistoryOpen} onClose={() => setIsHistoryOpen(false)} />
     </header>
   );
 };

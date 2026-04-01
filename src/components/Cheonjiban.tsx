@@ -79,23 +79,8 @@ const Cheonjiban = () => {
           if (idx === 5) {
             return (
               <div key="center" className="col-span-2 row-span-2 bg-[#F8FAFC] grid grid-cols-3 grid-rows-3 gap-1.5 p-1.5 border border-slate-400">
-                {/* 1. 좌측 열 (세로 통합 4단 구성: 양자/나이/성별/신살) */}
+                {/* 1. 좌측 열 (세로 통합 3단 구성: 성별/나이/류신) */}
                 <div className="row-span-3 flex flex-col gap-1">
-                  <div 
-                    className="relative flex-1 bg-orange-300 text-slate-800 flex flex-col items-center justify-center rounded-sm shadow-sm border-2 border-slate-600 min-h-0 cursor-pointer select-none overflow-hidden"
-                    onMouseDown={startYangjaLongPress}
-                    onMouseUp={cancelYangjaLongPress}
-                    onMouseLeave={cancelYangjaLongPress}
-                    onTouchStart={startYangjaLongPress}
-                    onTouchEnd={cancelYangjaLongPress}
-                  >
-                    {/* 게이지 바 애니메이션 */}
-                    <div 
-                      className={`absolute left-0 right-0 bottom-0 bg-white/40 transition-all ease-linear ${isYangjaPressing ? "h-full duration-1000" : "h-0 duration-[50ms]"}`}
-                    />
-                    <div className="relative z-10 text-[min(14px,3.2vw)] font-bold opacity-80 uppercase leading-none mb-0.5 pointer-events-none tracking-tighter">양자</div>
-                    <div className="relative z-10 text-[min(14px,3.2vw)] font-black leading-tight pointer-events-none tracking-tighter">1초</div>
-                  </div>
                   <div 
                     className={`flex-1 ${gender === "남" ? "bg-blue-900" : "bg-pink-500"} text-white flex items-center justify-center rounded-sm border-2 border-slate-600 font-black text-[min(15px,3.5vw)] tracking-tighter shadow-sm min-h-0 cursor-pointer active:scale-95 transition-colors select-none`}
                     onClick={() => setGender(gender === "남" ? "여" : "남")}
@@ -105,9 +90,10 @@ const Cheonjiban = () => {
                   <div className="flex-1 bg-white border-2 border-slate-600 text-slate-800 flex items-center justify-center rounded-sm shadow-sm min-h-0 relative">
                     <input 
                       type="tel" 
+                      maxLength={2}
                       value={age || ""}
                       onChange={(e) => {
-                        const str = e.target.value.replace(/[^0-9]/g, "");
+                        const str = e.target.value.replace(/[^0-9]/g, "").slice(0, 2);
                         if (str === "") {
                           setAge(0);
                         } else {
@@ -127,9 +113,25 @@ const Cheonjiban = () => {
                   </div>
                 </div>
                 
-                {/* 2. 중앙 열 (상하 50:50 분할: 소담 조언 / 현재 시간) */}
+                {/* 2. 중앙 열 (상하 50:50 분할: 양자 버튼 / 소담 조언 버튼) */}
                 <div className="row-span-3 flex flex-col gap-1.5">
-                  {/* 기존 1초 누름 랜덤 발동 UI (조언 내용 수정을 위해 임시 비활성화해제) */}
+                  <div 
+                    className="relative flex-1 bg-gradient-to-b from-amber-400 to-orange-500 text-white flex flex-col items-center justify-center rounded-sm shadow-sm border-2 border-slate-600 min-h-0 cursor-pointer select-none overflow-hidden"
+                    onMouseDown={startYangjaLongPress}
+                    onMouseUp={cancelYangjaLongPress}
+                    onMouseLeave={cancelYangjaLongPress}
+                    onTouchStart={startYangjaLongPress}
+                    onTouchEnd={cancelYangjaLongPress}
+                  >
+                    {/* 게이지 바 애니메이션 */}
+                    <div 
+                      className={`absolute left-0 right-0 bottom-0 bg-white/40 transition-all ease-linear ${isYangjaPressing ? "h-full duration-1000" : "h-0 duration-[50ms]"}`}
+                    />
+                    <div className="relative z-10 text-[min(18px,4.2vw)] font-black text-white leading-none mb-0.5 pointer-events-none tracking-tighter">양자</div>
+                    <div className="relative z-10 text-[min(18px,4.2vw)] font-black text-white leading-none mb-0.5 pointer-events-none tracking-tighter">생성</div>
+                  </div>
+                  
+                  {/* 소담 조언 버튼 */}
                   <div 
                     className="relative flex-1 bg-gradient-to-b from-purple-500 to-indigo-600 rounded-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all select-none shadow-lg border-2 border-slate-600 overflow-hidden"
                     onMouseDown={startLongPress}
@@ -143,27 +145,11 @@ const Cheonjiban = () => {
                      />
                      <div className="relative z-10 text-[min(18px,4.2vw)] font-black text-white leading-none mb-0.5 pointer-events-none tracking-tighter">소담</div>
                      <div className="relative z-10 text-[min(18px,4.2vw)] font-black text-white leading-none mb-0.5 pointer-events-none tracking-tighter">조언</div>
-                     <div className="relative z-10 text-[min(18px,4.2vw)] font-black text-white leading-none mb-0.5 pointer-events-none tracking-tighter">1초</div>
                   </div>
-                  {(() => {
-                    const [dateStr, timeStr] = dateTime.split(" ");
-                    const [y, m, d] = dateStr ? dateStr.split("/") : ["2026", "01", "01"];
-                    return (
-                      <div className="flex-1 border-2 border-slate-600 rounded-md flex flex-col items-center justify-center bg-white overflow-hidden shadow-sm gap-0.5 pt-0.5 pb-0.5">
-                         <div className="text-[min(14px,3.2vw)] font-black text-slate-700 leading-none tracking-tighter">{y}</div>
-                         <div className="text-[min(14px,3.2vw)] font-black text-slate-700 leading-none tracking-tighter">{m}/{d}</div>
-                         <div className="text-[min(16px,3.8vw)] font-black text-blue-900 tracking-tighter leading-none mt-0.5">{timeStr}</div>
-                      </div>
-                    );
-                  })()}
                 </div>
 
-                {/* 3. 우측 열 (세로 통합 4단 구성: 태세/월건/월장/점시) */}
+                {/* 3. 우측 열 (세로 통합 3단 구성: 월건/월장/점시) */}
                 <div className="row-span-3 flex flex-col gap-1">
-                  <div className="flex-1 bg-white border-2 border-slate-600 rounded-md p-0.5 flex flex-col items-center justify-center shadow-sm min-h-0 overflow-hidden">
-                    <span className="text-[min(14px,3.2vw)] text-gray-600 font-black uppercase leading-none tracking-tighter whitespace-nowrap">태세</span>
-                    <span className="text-[min(18px,4.2vw)] font-black text-slate-900 tracking-tighter whitespace-nowrap">{manseData ? manseData.taeseCheongan + manseData.taeseJiji : "丙午"}</span>
-                  </div>
                   <div className="flex-1 bg-white border-2 border-slate-600 rounded-md p-0.5 flex flex-col items-center justify-center shadow-sm min-h-0 overflow-hidden">
                     <span className="text-[min(14px,3.2vw)] text-gray-600 font-black uppercase leading-none tracking-tighter whitespace-nowrap">월건</span>
                     <span className="text-[min(18px,4.2vw)] font-black text-slate-900 tracking-tighter whitespace-nowrap">{manseData ? manseData.wolgunCheongan + manseData.wolgunJiji : "辛卯"}</span>
@@ -203,37 +189,42 @@ const Cheonjiban = () => {
 
         return (
           <div key={cell} className="relative flex flex-col justify-between p-1 border border-slate-400 bg-[#eaeff5] min-h-0 overflow-hidden h-full">
-            {/* 상단 통합 레이아웃 (신살 + 둔간 + 천반) */}
-            <div className="flex flex-col w-full h-full justify-start">
-              {/* 1. 신살(제거됨): 공간 최적화를 위해 천지반 셀에서는 렌더링하지 않음 */}
+            {/* 상단 통합 콘텐츠 래퍼 (우측에 빈 공간을 주어 전체 축을 좌측으로 밀어냄) */}
+            <div className="flex flex-col w-full h-full justify-start pr-2">
               <div className="w-full min-h-[4px]"></div>
 
               {/* 2. 둔간 (천반 바로 위) 및 천반 공망 표시 */}
               <div className="w-full flex justify-center leading-none mb-1 h-5 items-center">
                  {isCheonbanGongmang ? (
-                   <span className="text-[min(22px,5.5vw)] font-black text-red-500 tracking-tighter animate-pulse">○</span>
+                   <span className="text-[min(20px,5vw)] font-black text-red-500 tracking-tighter animate-pulse">○</span>
                  ) : (
-                   <span className="text-[min(22px,5.5vw)] font-black text-purple-600 tracking-tighter">{toHangul(dungan, isHangulMode)}</span>
+                   <span className="text-[min(20px,5vw)] font-black text-purple-600 tracking-tighter">{toHangul(dungan, isHangulMode)}</span>
                  )}
               </div>
 
-              {/* 3. 중앙 레이아웃: 12운성(좌) + 천반(중) + 천장(우) */}
+              {/* 3. 중앙 레이아웃: 12운성(숨김) + 천반(좌측시프트) + 천장(우붙임) */}
               <div className="w-full flex items-center justify-between py-0 h-6">
-                 {/* 12운성: 동적 계산 (일간 기반), 선생님 기준 천반 글자(upper) 대입 */}
-                 <span className="text-[min(14px,3.2vw)] font-black text-slate-600 w-1/3 text-right uppercase leading-none tracking-tighter pr-0.5 whitespace-nowrap">
+                 {/* 12운성: 숨김 처리하여 렌더링하지 않음 */}
+                 <span className="hidden">
                    {getTwelveStage(manseData?.ilganCheongan || "甲", upper)}
                  </span>
-                 {/* 천반: 정중앙 고정 */}
-                 <span className="text-[min(22px,5.5vw)] font-black text-slate-900 w-1/3 text-center leading-none tracking-tighter">{toHangul(upper, isHangulMode)}</span>
-                 {/* 천장: generalMap에서 뽑은 1글자를 천지반 전용 2글자 맵으로 변환하여 출력 */}
-                 <span className="text-[min(16px,3.8vw)] font-black text-blue-700 w-1/3 text-left leading-none tracking-tighter whitespace-nowrap overflow-hidden text-ellipsis pl-0.5">
-                   {toHangul(generalMap[upper] ? FULL_GENERALS[generalMap[upper]] : "", isHangulMode)}
-                 </span>
+                 
+                 {/* 천반 및 천장: 이전 3단 배치 구조를 유지하되 천반을 중앙에, 천장을 우측에 둠 */}
+                 {/* 숨겨진 공간만큼 앞당기기 위해 w-1/3 대신 flex 구조 최적화 */}
+                 <div className="flex-1 flex justify-center relative w-full items-center">
+                   {/* 천반 */}
+                   <span className="text-[min(20px,5vw)] font-black text-slate-900 leading-none tracking-tighter text-center">{toHangul(upper, isHangulMode)}</span>
+                   
+                   {/* 천장: 천반 글자 기준으로 우측에 앱솔루트로 바짝 붙임으로써 기준축 흔들림 방지 */}
+                   <span className="absolute left-[50%] ml-[min(12px,3vw)] text-[min(16px,3.8vw)] font-black text-blue-700 whitespace-nowrap overflow-hidden text-ellipsis">
+                     {toHangul(generalMap[upper] ? FULL_GENERALS[generalMap[upper]] : "", isHangulMode)}
+                   </span>
+                 </div>
               </div>
             </div>
 
-            {/* 4. 지반 지지 (위 그룹 바로 아래에 표시하여 여백 최소화 + 지반 공망 시 원형 테두리) */}
-            <div className="text-[min(22px,5.5vw)] font-black leading-none w-full flex justify-center tracking-tighter">
+            {/* 4. 지반 지지 (상단 그룹과 동일하게 축 이동 적용) */}
+            <div className="text-[min(20px,5vw)] font-black leading-none w-full flex justify-center tracking-tighter pr-2">
                <span className={`flex items-center justify-center w-[min(28px,6.5vw)] h-[min(28px,6.5vw)] text-slate-900 ${isJibanGongmang ? "border-[2px] border-red-500 rounded-full" : ""}`}>
                  {toHangul(cell, isHangulMode)}
                </span>
@@ -244,8 +235,8 @@ const Cheonjiban = () => {
 
 
 
-            {/* 특별 마커 (좌측 하단 배치) */}
-            <div className="absolute bottom-1 left-1 flex flex-col items-start gap-0.5 pointer-events-none">
+            {/* 특별 마커 (우측 하단 배치) */}
+            <div className="absolute bottom-1 right-1 flex flex-col items-end gap-0.5 pointer-events-none">
               {isHaengnyeon && (
                 <div className="flex items-center justify-center bg-yellow-100 text-orange-800 text-[min(10px,2.5vw)] font-black px-1 py-[2px] rounded-[4px] border border-orange-200 shadow-sm leading-none whitespace-nowrap min-h-0 tracking-tighter">
                    <span>{haengnyeonGanji}</span>

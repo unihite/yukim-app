@@ -61,7 +61,7 @@ const getNowString = (): string => {
 export const DivinationProvider = ({ children }: { children: ReactNode }) => {
   const [caseName, setCaseName] = useState("메모");
   const [gender, setGender] = useState<"남" | "여">("남");
-  const [age, setAge] = useState(30);
+  const [age, setAge] = useState(1);
   const [isBirthdayPassed, setIsBirthdayPassed] = useState(true);
   const [dateTime, setDateTime] = useState(getNowString);
   const [yangja1, setYangja1] = useState("");

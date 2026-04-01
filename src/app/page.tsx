@@ -36,7 +36,8 @@ export default function Home() {
     if (token) {
       setIsAuthenticated(true);
     } else {
-      setIsAuthenticated(false); // 승인된 토큰이 없으면 AuthScreen 컴포넌트 등장
+      // 실제 서비스 배포 시 보안을 위해 인증 토큰이 없으면 관리자 승인 화면으로 보냄
+      setIsAuthenticated(false); 
     }
   }, []);
 
@@ -67,16 +68,19 @@ export default function Home() {
       {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
       
       {!showSplash && (
-        <main id="yukim-capture-area" className="flex flex-col flex-1 w-full relative animate-fade-in bg-[#f8fafc]">
-          {/* 1. 프리미엄 헤더 */}
-          <Header />
-          
-          {/* 2. 콘텐츠 영역 (좌우 여백 최소화) */}
-          <div className="flex-1 px-0.5 py-2 space-y-0">
-            {/* 점술 정보 입력 */}
-            <InputPanel />
-            
-            {/* 사과삼전 레이아웃 */}
+        <div className="flex flex-col flex-1 w-full relative h-full">
+          {/* 1. 프리미엄 헤더 (항상 상단 고정, 메모/캡처 영역과 완전 분리) */}
+          <div className="sticky top-0 z-[60] w-full shadow-lg">
+            <Header />
+          </div>
+
+          <main id="yukim-capture-area" className="flex flex-col flex-1 w-full relative animate-fade-in bg-[#f8fafc]">
+            {/* 2. 콘텐츠 영역 (좌우 여백 최소화) */}
+            <div className="flex-1 px-0.5 pt-3 pb-2 space-y-0">
+              {/* 점술 정보 입력 (메모칸) */}
+              <InputPanel />
+              
+              {/* 사과삼전 레이아웃 */}
             <SagwaSamjeon />
             
             {/* NEW: 양자수 액션 버튼 */}
@@ -95,6 +99,7 @@ export default function Home() {
             </p>
           </footer>
         </main>
+        </div>
       )}
     </div>
   );
