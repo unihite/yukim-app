@@ -211,8 +211,8 @@ export const calculateSamjeon = (
   let choUpper = "", choLower = "", jungUpper = "", jungLower = "", malUpper = "", malLower = "";
   let isBokeum = false;
 
-  // ■ 복음과(伏吟課): 월장 = 점시 이고 yangja2 입력 없으면 테이블 적용
-  if (woljang === jeomsi && !chojeonUpperOverride && ilgan && ilji) {
+  // ■ 복음과(伏吟課): 월장 = 점시 이면 양자수 2번 입력을 무시하고 고정 테이블 적용
+  if (woljang === jeomsi && ilgan && ilji) {
     const bokeum = getBokuemSamjeon(ilgan, ilji);
     if (bokeum) {
       [choUpper, jungUpper, malUpper] = bokeum;
