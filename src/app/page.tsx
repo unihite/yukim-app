@@ -74,9 +74,9 @@ export default function Home() {
             <Header />
           </div>
 
-          <main id="yukim-capture-area" className="flex flex-col flex-1 w-full relative animate-fade-in bg-[#f8fafc] pt-[44px]">
-            {/* 2. 콘텐츠 영역 (좌우 여백 최소화) */}
-            <div className="flex-1 px-0.5 pt-3 pb-2 space-y-0">
+          <main className="flex flex-col flex-1 w-full relative animate-fade-in bg-[#f8fafc] pt-[44px]">
+            {/* 2. 콘텐츠 영역 (좌우 여백 최소화, 실제 캡처 대상) */}
+            <div id="yukim-capture-area" className="flex-1 px-0.5 pt-3 pb-6 space-y-0 bg-[#f8fafc]">
               {/* 점술 정보 입력 (메모칸) */}
               <InputPanel />
               
