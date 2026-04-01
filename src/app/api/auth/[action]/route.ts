@@ -66,7 +66,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ act
 
       // 레코드가 존재할 때는 관리자가 직접 거절했거나 승인 대기 중이거나, 토큰이 틀린 경우 차단
       if (record.status !== "approved" || record.code !== token) {
-        return NextResponse.json({ valid: false });
+        return NextResponse.json({ valid: false, reason: "rejected" });
       }
       
       // 통과 (입장 허용)

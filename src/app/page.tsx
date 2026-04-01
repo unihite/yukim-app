@@ -36,29 +36,34 @@ export default function Home() {
     const token = localStorage.getItem("yukim_auth_token");
 
     if (phone && token) {
-      // 서버에서 클라우드 DB와 대조하여 현재 권한이 유효한지 핑(ping) 검사
-      fetch("/api/auth/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone, token }),
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.valid === true) {
-          setIsAuthenticated(true); // 통과
-        } else if (data.valid === false) {
-          // 관리자에 의해 명단에서 삭제되었거나 해킹된 토큰이 확실한 경우에만 삭제
-          localStorage.removeItem("yukim_auth_token");
-          setIsAuthenticated(false); // 권한 박탈 및 접근 차단
-        } else {
-          // 그 외의 경우 (서버 장애 등) 임시 허용
-          setIsAuthenticated(true);
-        }
-      })
-      .catch((err) => {
-        // 네트워크 오프라인 또는 일시적 서버 오류 시, 토큰을 삭제하지 않고 기존 권한으로 진입 허용 (UX 개선)
-        console.warn("서버 통신 실패 - 오프라인 모드로 간주하여 기존 권한 유지");
-        setIsAuthenticated(true);
+      // 1. 서버 통신 없이 즉시 로컬 통과 (로딩창 제거)
+      import("../utils/authHash").then(({ generateAuthCodeClient }) => {
+        generateAuthCodeClient(phone).then((expectedToken) => {
+          if (token === expectedToken) {
+            setIsAuthenticated(true); // 오프라인에서도 즉시 진입 허용
+
+            // 2. 백그라운드 검증 (관리자가 명시적으로 거절/삭제했는지 앱 사용 중 조용히 확인)
+            fetch("/api/auth/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ phone, token }),
+            })
+            .then(res => res.json())
+            .then(data => {
+              // 확실하게 거절(rejected) 신호가 온 경우에만 접속을 끊어버림
+              if (data.valid === false && data.reason === "rejected") {
+                localStorage.removeItem("yukim_auth_token");
+                setIsAuthenticated(false);
+                alert("관리자에 의해 기기 사용 권한이 회수되었습니다.");
+                window.location.reload();
+              }
+            })
+            .catch(() => { /* 서버 지연/오프라인 시 기존처럼 그냥 앱 계속 사용 */ });
+          } else {
+            // 로컬 토큰 자체가 위변조된 경우
+            setIsAuthenticated(false);
+          }
+        });
       });
     } else {
       // 토큰이 애초에 없으면 승인 화면으로 보냄
