@@ -25,21 +25,21 @@ const ResultCell: React.FC<ResultCellProps> = ({
   stem, general, upper, lower, relation, stage, shinsal, colorStem = "text-purple-600", isMain = false, isUpperGongmang = false, isLowerGongmang = false
 }) => {
   return (
-    <div className={`flex flex-col items-center p-1.5 pt-2 border-gray-200 min-w-0 flex-1 min-h-[120px] ${isMain ? "bg-white" : ""}`}>
-      {/* 1. 최상단: 신살 (고정 높이를 부여하여 줄바꿈 시에도 아래 메인 글자들의 수평 정렬 유지) */}
-      <div className="w-full flex justify-end flex-wrap content-start gap-0.5 px-0.5 mb-1 h-[36px] overflow-hidden">
+    <div className={`relative flex flex-col items-center p-1 border-gray-200 min-w-0 flex-1 min-h-[110px] ${isMain ? "bg-white" : ""}`}>
+      {/* 1. 최상단: 신살 (우측 상단에 바짝 붙임, 타이트한 텍스트/배경) */}
+      <div className="absolute top-[2px] right-[2px] flex flex-wrap justify-end content-start gap-[1px] w-[95%] z-10 pointer-events-none">
         {shinsal ? shinsal.split(" ").filter(Boolean).map((s, idx) => (
           <span 
             key={idx} 
-            className="text-[min(10px,2.5vw)] font-black text-orange-700 bg-orange-100 border border-orange-200 px-1 py-[1px] rounded-sm leading-none shadow-sm whitespace-nowrap tracking-tighter"
+            className="text-[min(8.5px,2vw)] font-black text-orange-700 bg-orange-100 border border-orange-200 px-[2px] py-0 rounded-[2px] leading-tight shadow-sm whitespace-nowrap tracking-tighter"
           >
             {s}
           </span>
         )) : null}
       </div>
 
-      {/* 2. 둔간 (천반 바로 위, 22px) */}
-      <div className="w-full min-h-[22px] flex justify-center items-end leading-none mb-1">
+      {/* 2. 둔간 (천반 바로 위, 22px, absolute 겹침을 방지하기 위해 상단 마진부여) */}
+      <div className="w-full min-h-[22px] flex justify-center items-end leading-none mt-[16px] mb-1">
         {isUpperGongmang ? (
           <span className="text-[min(22px,5.5vw)] font-black text-red-500 tracking-tighter animate-pulse">○</span>
         ) : (
