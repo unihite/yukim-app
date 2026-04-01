@@ -44,19 +44,21 @@ export default function Home() {
       })
       .then(res => res.json())
       .then(data => {
-        if (data.valid) {
+        if (data.valid === true) {
           setIsAuthenticated(true); // 통과
-        } else {
-          // 관리자에 의해 명단에서 삭제되었거나 해킹된 토큰
+        } else if (data.valid === false) {
+          // 관리자에 의해 명단에서 삭제되었거나 해킹된 토큰이 확실한 경우에만 삭제
           localStorage.removeItem("yukim_auth_token");
           setIsAuthenticated(false); // 권한 박탈 및 접근 차단
+        } else {
+          // 그 외의 경우 (서버 장애 등) 임시 허용
+          setIsAuthenticated(true);
         }
       })
       .catch((err) => {
-        // 서버 요청 등에 실패해서 응답값을 받지 못한 경우에도, 얄짤없이 튕겨내도록 보안 강화!
-        console.warn("서버 통신 실패 - 강제 차단");
-        localStorage.removeItem("yukim_auth_token");
-        setIsAuthenticated(false);
+        // 네트워크 오프라인 또는 일시적 서버 오류 시, 토큰을 삭제하지 않고 기존 권한으로 진입 허용 (UX 개선)
+        console.warn("서버 통신 실패 - 오프라인 모드로 간주하여 기존 권한 유지");
+        setIsAuthenticated(true);
       });
     } else {
       // 토큰이 애초에 없으면 승인 화면으로 보냄

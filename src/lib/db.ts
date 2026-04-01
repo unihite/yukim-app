@@ -14,7 +14,10 @@ export async function getRequest(phone: string) {
     try {
       const redis = Redis.fromEnv();
       return await redis.hget("yukim_requests", phone);
-    } catch(e) { console.error(e); }
+    } catch(e) { 
+      console.error("Redis 통신 오류:", e); 
+      throw e; 
+    }
   }
   return globalMemoryDb[phone] || null;
 }
@@ -28,7 +31,10 @@ export async function getAllRequests() {
       const redis = Redis.fromEnv();
       const all: Record<string, any> | null = await redis.hgetall("yukim_requests");
       return all ? Object.values(all) : [];
-    } catch(e) { console.error(e); }
+    } catch(e) { 
+      console.error("Redis 통신 오류:", e);
+      throw e;
+    }
   }
   return Object.values(globalMemoryDb);
 }
@@ -42,7 +48,10 @@ export async function setRequest(phone: string, data: any) {
       const redis = Redis.fromEnv();
       await redis.hset("yukim_requests", { [phone]: data });
       return;
-    } catch(e) { console.error(e); }
+    } catch(e) {
+      console.error("Redis 통신 오류:", e);
+      throw e;
+    }
   }
   globalMemoryDb[phone] = data;
 }
@@ -56,7 +65,10 @@ export async function deleteRequest(phone: string) {
       const redis = Redis.fromEnv();
       await redis.hdel("yukim_requests", phone);
       return;
-    } catch(e) { console.error(e); }
+    } catch(e) {
+      console.error("Redis 통신 오류:", e);
+      throw e;
+    }
   }
   delete globalMemoryDb[phone];
 }
