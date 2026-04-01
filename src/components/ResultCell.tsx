@@ -26,8 +26,8 @@ const ResultCell: React.FC<ResultCellProps> = ({
 }) => {
   return (
     <div className={`flex flex-col items-center p-1.5 pt-2 border-gray-200 min-w-0 flex-1 min-h-[120px] ${isMain ? "bg-white" : ""}`}>
-      {/* 1. 최상단: 신살 (단독 행, 여러 개일 경우 자동 줄바꿈) */}
-      <div className="w-full flex justify-end flex-wrap gap-0.5 px-1 mb-0.5 min-h-[18px]">
+      {/* 1. 최상단: 신살 (고정 높이를 부여하여 줄바꿈 시에도 아래 메인 글자들의 수평 정렬 유지) */}
+      <div className="w-full flex justify-end flex-wrap content-start gap-0.5 px-0.5 mb-1 h-[36px] overflow-hidden">
         {shinsal ? shinsal.split(" ").filter(Boolean).map((s, idx) => (
           <span 
             key={idx} 
