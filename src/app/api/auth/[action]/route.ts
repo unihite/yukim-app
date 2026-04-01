@@ -34,6 +34,19 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ act
       return NextResponse.json({ success: true, status: record.status, code: record.code });
     }
 
+    // 3. 앱 입장 시 실시간 권한 교차 검증 (보안 박탈 동기화)
+    if (action === "verify") {
+      const { token } = body;
+      const record = await getRequest(phone);
+
+      // 명단에 아예 없거나 (삭제됨), 승인 상태가 아니거나, 발급된 코드가 클라이언트 토큰과 틀리면 입장 불가(통과 실패)
+      if (!record || record.status !== "approved" || record.code !== token) {
+        return NextResponse.json({ valid: false });
+      }
+      // 통과 (입장 허용)
+      return NextResponse.json({ valid: true });
+    }
+
     return NextResponse.json({ error: "알 수 없는 요청" }, { status: 404 });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });

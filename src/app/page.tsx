@@ -31,12 +31,35 @@ export default function Home() {
     // 개발 모드(로컬 테스트)일 때는 브라우저에서도 보이도록 임시 허용하고, 실제 배포 시에는 PWA로만 작동하게 함
     setIsStandalone(isPWA || process.env.NODE_ENV === "development");
 
-    // 2. 인증 토큰 검사 (실제 관리자 승인 여부 체크)
+    // 2. 인증 토큰 검사 및 실시간 서버 권한 교차 검증 (보안 박탈 동기화)
+    const phone = localStorage.getItem("yukim_phone");
     const token = localStorage.getItem("yukim_auth_token");
-    if (token) {
-      setIsAuthenticated(true);
+
+    if (phone && token) {
+      // 서버에서 클라우드 DB와 대조하여 현재 권한이 유효한지 핑(ping) 검사
+      fetch("/api/auth/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, token }),
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.valid) {
+          setIsAuthenticated(true); // 통과
+        } else {
+          // 관리자에 의해 명단에서 삭제되었거나 해킹된 토큰
+          localStorage.removeItem("yukim_auth_token");
+          setIsAuthenticated(false); // 권한 박탈 및 접근 차단
+        }
+      })
+      .catch((err) => {
+        // 서버 요청 등에 실패해서 응답값을 받지 못한 경우에도, 얄짤없이 튕겨내도록 보안 강화!
+        console.warn("서버 통신 실패 - 강제 차단");
+        localStorage.removeItem("yukim_auth_token");
+        setIsAuthenticated(false);
+      });
     } else {
-      // 실제 서비스 배포 시 보안을 위해 인증 토큰이 없으면 관리자 승인 화면으로 보냄
+      // 토큰이 애초에 없으면 승인 화면으로 보냄
       setIsAuthenticated(false); 
     }
   }, []);
