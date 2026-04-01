@@ -1,22 +1,28 @@
-import { Redis } from "@upstash/redis";
+import Redis from "ioredis";
 
-// 환경 변수 설정 여부 판단
-const hasRedis = !!(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
+// Vercel에서 발급된 REDIS_URL이 있는지 확인합니다.
+const redisUrl = process.env.REDIS_URL || process.env.UPSTASH_REDIS_REST_URL;
+const hasRedis = !!redisUrl;
 
-// 임시 휘발성 글로벌 메모리 (Redis 환경이 완전 세팅되기 전까지 작동을 보장하기 위함)
+let redisClient: Redis | null = null;
+if (hasRedis) {
+  // REDIS_URL로 ioredis 연결 생성
+  redisClient = new Redis(redisUrl as string);
+}
+
+// 임시 휘발성 글로벌 메모리 (Redis 스토어 설정 전/오류 시 사용)
 const globalMemoryDb: Record<string, any> = {};
 
 /**
  * 특정 전화번호의 승인 요청 정보 가져오기
  */
 export async function getRequest(phone: string) {
-  if (hasRedis) {
+  if (hasRedis && redisClient) {
     try {
-      const redis = Redis.fromEnv();
-      return await redis.hget("yukim_requests", phone);
+      const data = await redisClient.hget("yukim_requests", phone);
+      return data ? JSON.parse(data) : null;
     } catch(e) { 
       console.error("Redis 통신 오류 (임시 메모리로 대체):", e); 
-      // Redis 에러 발생 시 최후의 수단으로 메모리 반환
     }
   }
   return globalMemoryDb[phone] || null;
@@ -26,11 +32,13 @@ export async function getRequest(phone: string) {
  * 전체 승인 요청 목록 가져오기
  */
 export async function getAllRequests() {
-  if (hasRedis) {
+  if (hasRedis && redisClient) {
     try {
-      const redis = Redis.fromEnv();
-      const all: Record<string, any> | null = await redis.hgetall("yukim_requests");
-      return all ? Object.values(all) : [];
+      const all = await redisClient.hgetall("yukim_requests");
+      if (all) {
+        return Object.values(all).map(val => JSON.parse(val));
+      }
+      return [];
     } catch(e) { 
       console.error("Redis 통신 오류 (임시 메모리로 대체):", e);
     }
@@ -42,10 +50,9 @@ export async function getAllRequests() {
  * 승인 요청 정보 갱신/저장
  */
 export async function setRequest(phone: string, data: any) {
-  if (hasRedis) {
+  if (hasRedis && redisClient) {
     try {
-      const redis = Redis.fromEnv();
-      await redis.hset("yukim_requests", { [phone]: data });
+      await redisClient.hset("yukim_requests", phone, JSON.stringify(data));
       return;
     } catch(e) {
       console.error("Redis 통신 오류 (임시 메모리에 저장):", e);
@@ -58,10 +65,9 @@ export async function setRequest(phone: string, data: any) {
  * 특정 전화번호 삭제
  */
 export async function deleteRequest(phone: string) {
-  if (hasRedis) {
+  if (hasRedis && redisClient) {
     try {
-      const redis = Redis.fromEnv();
-      await redis.hdel("yukim_requests", phone);
+      await redisClient.hdel("yukim_requests", phone);
       return;
     } catch(e) {
       console.error("Redis 통신 오류 (임시 메모리에서 삭제):", e);
