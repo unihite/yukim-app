@@ -76,7 +76,7 @@ export default function Home() {
 
           <main className="flex flex-col flex-1 w-full relative animate-fade-in bg-[#f8fafc] pt-[44px]">
             {/* 2. 콘텐츠 영역 (좌우 여백 최소화, 실제 캡처 대상) */}
-            <div id="yukim-capture-area" className="flex-1 px-0.5 pt-3 pb-6 space-y-0 bg-[#f8fafc]">
+            <div id="yukim-capture-area" className="flex-1 px-0.5 pt-3 pb-2 space-y-0 bg-[#f8fafc]">
               {/* 점술 정보 입력 (메모칸) */}
               <InputPanel />
               
@@ -92,9 +92,9 @@ export default function Home() {
             </section>
           </div>
 
-          {/* 3. 하단 푸터 (여백 축소 및 강조) */}
-          <footer className="w-full py-3 text-center border-t border-slate-200 bg-slate-50/50">
-            <p className="text-[12px] text-slate-500 font-black tracking-[0.2em]">
+          {/* 3. 하단 푸터 (불필요한 선 및 여백 최소화) */}
+          <footer className="w-full pt-1 pb-3 text-center bg-[#f8fafc]">
+            <p className="text-[11px] text-slate-400 font-black tracking-[0.2em]">
               © 2026 소담 양자 육임
             </p>
           </footer>
