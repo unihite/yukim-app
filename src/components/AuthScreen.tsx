@@ -169,12 +169,13 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onSuccess }) => {
               </label>
               <div className="relative">
                 <input
-                  type="text"
+                  type="tel"
+                  autoComplete="tel"
                   maxLength={11}
                   value={phone}
                   onChange={handlePhoneChange}
                   disabled={status === "pending" || status === "approved"}
-                  placeholder="예: 01012345678"
+                  placeholder="터치하여 내 전화번호 자동입력"
                   className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 text-[18px] font-bold text-slate-800 placeholder:text-slate-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-mono tracking-wider text-center disabled:opacity-50"
                 />
               </div>
