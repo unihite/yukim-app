@@ -41,9 +41,8 @@ const Header = () => {
       const list = loaded ? JSON.parse(loaded) : [];
       list.push(newItem);
       localStorage.setItem("yukim_saved_history", JSON.stringify(list));
-      alert("현재 점사가 안전하게 기록되었습니다.");
     } catch(e) {
-      alert("기록 저장 중 오류가 발생했습니다.");
+      console.error("기록 저장 중 오류가 발생했습니다.", e);
     }
   };
 
