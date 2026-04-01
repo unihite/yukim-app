@@ -70,11 +70,11 @@ export default function Home() {
       {!showSplash && (
         <div className="flex flex-col flex-1 w-full relative h-full">
           {/* 1. 프리미엄 헤더 (항상 상단 고정, 메모/캡처 영역과 완전 분리) */}
-          <div className="sticky top-0 z-[60] w-full shadow-lg">
+          <div className="fixed top-0 left-0 right-0 z-[70] w-full shadow-lg">
             <Header />
           </div>
 
-          <main id="yukim-capture-area" className="flex flex-col flex-1 w-full relative animate-fade-in bg-[#f8fafc]">
+          <main id="yukim-capture-area" className="flex flex-col flex-1 w-full relative animate-fade-in bg-[#f8fafc] pt-[44px]">
             {/* 2. 콘텐츠 영역 (좌우 여백 최소화) */}
             <div className="flex-1 px-0.5 pt-3 pb-2 space-y-0">
               {/* 점술 정보 입력 (메모칸) */}
